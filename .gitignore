@@ -1,0 +1,12 @@
+# Mac OS X
+.DS_Store
+
+# Node
+node_modules
+npm-debug.log
+
+# Visual Studio Code
+.vscode
+
+# Example
+example/node_modules

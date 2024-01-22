@@ -1,0 +1,33 @@
+name: Build
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version:
+          - '22'
+          - '21'
+          - '20'
+          - '19'
+          - '18'
+          - '17'
+          - '16'
+          - '14'
+          - '12'
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Using Node version ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - run: npm install --also=dev
+    - run: npm test
