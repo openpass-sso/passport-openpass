@@ -1,0 +1,48 @@
+{
+  "name": "passport-openpass",
+  "version": "0.1.0",
+  "description": "OpenPass authentication strategy for Passport using OpenID Connect.",
+  "keywords": [
+    "passport",
+    "openpass",
+    "auth",
+    "authn",
+    "authentication",
+    "identity"
+  ],
+  "author": {
+    "name": "Chris Riddle",
+    "email": "chris.riddle@thetradedesk.com",
+    "url": "https://myopenpass.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/openpass-sso/passport-openpass.git"
+  },
+  "bugs": {
+    "url": "http://github.com/openpass-sso/passport-openpass/issues"
+  },
+  "license": "MIT",
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://opensource.org/licenses/MIT"
+    }
+  ],
+  "main": "./lib",
+  "dependencies": {
+    "passport-openidconnect": "0.1.x"
+  },
+  "devDependencies": {
+    "chai": "2.x.x",
+    "chai-passport-strategy": "1.x.x",
+    "make-node": "0.4.6",
+    "mocha": "^10.2.0"
+  },
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "scripts": {
+    "test": "mocha --require ./test/bootstrap/node --recursive"
+  }
+}
