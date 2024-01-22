@@ -9,16 +9,6 @@ integrated into any application or framework that supports
 [Connect](https://github.com/senchalabs/connect#readme)-style middleware,
 including [Express](https://expressjs.com/).
 
-<div align="center">
-
-:seedling: [Tutorial](https://www.passportjs.org/tutorials/openpass/?utm_source=github) •
-
-</div>
-
-<div align="right">
-  <sup>Developed by <a href="#authors">Chris Riddle</a>.</sub>
-</div>
-
 ## Install
 
 ```sh
