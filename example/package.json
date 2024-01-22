@@ -1,0 +1,26 @@
+{
+  "name": "passport-openpass-example",
+  "version": "0.1.0",
+  "description": "Passport strategy for OpenPass example",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "node server.js"
+  },
+  "author": {
+    "name": "Chris Riddle",
+    "email": "chris.riddle@thetradedesk.com",
+    "url": "https://myopenpass.com"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.13.3",
+    "ejs": ">= 0.0.0",
+    "express": ">= 0.0.0",
+    "express-partials": "^0.3.0",
+    "express-session": "^1.11.3",
+    "method-override": "^2.3.5",
+    "passport": ">= 0.0.0",
+    "router": "^1.1.3"
+  }
+}
