@@ -142,4 +142,4 @@ app.get('/oauth2/redirect/openpass',
 
 [The MIT License](http://opensource.org/licenses/MIT)
 
-Copyright (c) 2021-2023 Chris Riddle
+Copyright (c) 2021-2023 Jared Hanson
