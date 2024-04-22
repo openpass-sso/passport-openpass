@@ -1,9 +1,2 @@
-Makefile
-docs/
-examples/
-reports/
-test/
-var/
-
 .jshintrc
-.travis.yml
+example

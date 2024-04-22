@@ -2,13 +2,13 @@
   "name": "passport-openpass",
   "version": "0.1.0",
   "description": "OpenPass authentication strategy for Passport using OpenID Connect.",
+  "main": "./lib",
+  "scripts": {
+    "test": "mocha --require ./test/bootstrap/node --recursive"
+  },
   "keywords": [
     "passport",
-    "openpass",
-    "auth",
-    "authn",
-    "authentication",
-    "identity"
+    "openpass"
   ],
   "author": {
     "name": "Chris Riddle",
@@ -29,7 +29,6 @@
       "url": "https://opensource.org/licenses/MIT"
     }
   ],
-  "main": "./lib",
   "dependencies": {
     "passport-openidconnect": "0.1.x"
   },
@@ -40,9 +39,6 @@
     "mocha": "^10.2.0"
   },
   "engines": {
-    "node": ">= 0.4.0"
-  },
-  "scripts": {
-    "test": "mocha --require ./test/bootstrap/node --recursive"
+    "node": ">= 10"
   }
 }

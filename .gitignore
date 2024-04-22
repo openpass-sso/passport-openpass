@@ -1,10 +1,12 @@
-var/
-docs/
-reports/
-
 # Mac OS X
 .DS_Store
 
-# Node.js
+# Node
 node_modules
 npm-debug.log
+
+# Visual Studio Code
+.vscode
+
+# Example
+example/node_modules

@@ -1,0 +1,80 @@
+name: Release a PRE-release version to NPM
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "PRE-release version (without v, without -pre-release)"
+        required: true
+        type: string
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+      packages: write
+
+    steps:
+
+    - name: Parse semver string
+      id: semver_parser 
+      uses: booxmedialtd/ws-action-parse-semver@v1
+      with:
+        input_string: ${{ inputs.version }}-pre-release
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+        scope: '@openpass'
+
+    - name: Set version for deploy
+      run: npm version ${{ steps.semver_parser.outputs.fullversion }} --no-git-tag-version --allow-same-version
+
+    - name: NPM Install
+      run: npm ci
+
+    - name: NPM Build  
+      run: npm run build
+
+    - name: Update Git user
+      run: |
+        git config --local user.name "openpass-sso"
+        git config --local user.email openpass-sso@users.noreply.github.com
+
+    - name: Commit version for deploy
+      run: |
+        git add package.json
+        git add package-lock.json
+        git commit -m "Releasing version: ${{ steps.semver_parser.outputs.fullversion }}"
+
+    - name: NPM Publish
+      run: npm publish
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+    - name: Upload SDK to artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: passport-openpass
+        path: dist/
+
+    - name: Create Release Tag
+      uses: rickstaa/action-create-tag@v1
+      with:
+        tag: "v${{ steps.semver_parser.outputs.fullversion }}"
+        message: "Release v${{ steps.semver_parser.outputs.fullversion }}"
+
+    - name: GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        generate_release_notes: true
+        tag_name: v${{ steps.semver_parser.outputs.fullversion }}
+        prerelease: true
