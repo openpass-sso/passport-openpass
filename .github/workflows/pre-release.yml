@@ -39,10 +39,7 @@ jobs:
       run: npm version ${{ steps.semver_parser.outputs.fullversion }} --no-git-tag-version --allow-same-version
 
     - name: NPM Install
-      run: npm ci
-
-    - name: NPM Build  
-      run: npm run build
+      run: npm install
 
     - name: Update Git user
       run: |
@@ -59,12 +56,6 @@ jobs:
       run: npm publish
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-    - name: Upload SDK to artifacts
-      uses: actions/upload-artifact@v4
-      with:
-        name: passport-openpass
-        path: dist/
 
     - name: Create Release Tag
       uses: rickstaa/action-create-tag@v1
