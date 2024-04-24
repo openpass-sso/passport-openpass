@@ -1,9 +1,7 @@
 # passport-openpass
 
-[Passport](https://www.passportjs.org/) strategy for authenticating with
-[OpenPass](https://myopenpass.com/) using [OpenID Connect](https://www.passportjs.org/features/openid-connect/).
-
-This module lets you authenticate using OpenPass in your Node.js applications.
+[Passport](http://passportjs.org/) strategy for authenticating with [OpenPass](https://myopenpass.com/)
+using [OpenID Connect](https://www.passportjs.org/features/openid-connect/).
 
 ## Install
 
@@ -20,6 +18,10 @@ application can make use of OpenPass's authentication system, you must first
 register your app with OpenPass.  Once registered, a client ID and secret will be
 issued which are used by OpenPass to identify your app.
 
+#### Configure Strategy
+
+The OpenPass authentication strategy authenticates users using OpenPass. The strategy requires a verify callback, which accepts these credentials and calls done providing a user profileuser, as well as options specifying a client ID, client secret, and callback URL.
+
 ```js
 var OpenPassStrategy = require('passport-openpass');
 
@@ -28,8 +30,9 @@ passport.use(new OpenPassStrategy({
     clientSecret: process.env['OPENPASS_CLIENT_SECRET'],
     callbackURL: 'https://www.example.com/oauth2/redirect/openpass'
   },
-  function verify(issuer, profile, cb) {
+  function verify(iss, profile, context, idToken, accessToken, refreshToken, done) {
     console.log(profile.id);
+    // 
     });
   }
 ));
@@ -55,6 +58,21 @@ app.get('/oauth2/redirect/openpass',
     res.redirect('/');
   });
 ```
+
+## Examples
+
+For a complete example, refer to the [login example](https://github.com/cfsghost/passport-openpass/tree/master/example).
+
+## Tests
+
+```shell
+$ npm install --dev
+$ make test
+```
+
+## Credits
+
+  - [Jared Hanson](http://github.com/jaredhanson)
 
 ## License
 

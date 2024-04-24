@@ -1,2 +1,8 @@
 .jshintrc
+.github
+.vscode
+.editorconfig
+.jshintrc
+
 example
+test
