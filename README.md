@@ -6,7 +6,7 @@ using [OpenID Connect](https://www.passportjs.org/features/openid-connect/).
 ## Install
 
 ```sh
-$ npm install passport-openpass
+$ npm install @openpass/passport-openpass
 ```
 
 ## Usage
