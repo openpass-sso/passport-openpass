@@ -14,7 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      id-token: write
       contents: write
       packages: write
 
@@ -22,12 +21,12 @@ jobs:
 
     - name: Parse semver string
       id: semver_parser 
-      uses: booxmedialtd/ws-action-parse-semver@v1
+      uses: booxmedialtd/ws-action-parse-semver@7784200024d6b3fc01253e617ec0168daf603de3 # v1.4.7
       with:
         input_string: ${{ inputs.version }}
 
     - name: Checkout
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         persist-credentials: false # otherwise, the token used is the GITHUB_TOKEN, instead of your personal access token.
 
@@ -39,7 +38,9 @@ jobs:
         scope: '@openpass'
 
     - name: Set version for deploy
-      run: npm version ${{ steps.semver_parser.outputs.fullversion }} --no-git-tag-version --allow-same-version
+      run: npm version "${VERSION}" --no-git-tag-version --allow-same-version
+      env:
+        VERSION: ${{ steps.semver_parser.outputs.fullversion }}
 
     - name: NPM Install 
       run: npm install --also=dev
@@ -56,7 +57,9 @@ jobs:
       run: |
         git add package.json
         git add package-lock.json
-        git commit -m "Releasing version: ${{ steps.semver_parser.outputs.fullversion }}"
+        git commit -m "Releasing version: ${VERSION}"
+      env:
+        VERSION: ${{ steps.semver_parser.outputs.fullversion }}
 
     - name: NPM Publish
       run: npm publish
@@ -64,18 +67,18 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
     - name: Push changes
-      uses: ad-m/github-push-action@master
+      uses: ad-m/github-push-action@77c5b412c50b723d2a4fbc6d71fb5723bcd439aa # master on Jul 1, 2024
       with:
         branch: ${{ github.ref }}
 
     - name: Create Release Tag
-      uses: rickstaa/action-create-tag@v1
+      uses: rickstaa/action-create-tag@a1c7777fcb2fee4f19b0f283ba888afa11678b72 # v1.7.2
       with:
         tag: "v${{ steps.semver_parser.outputs.fullversion }}"
         message: "Release v${{ steps.semver_parser.outputs.fullversion }}"
 
     - name: GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
       with:
         generate_release_notes: true
         tag_name: v${{ steps.semver_parser.outputs.fullversion }}
