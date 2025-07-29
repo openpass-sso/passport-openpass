@@ -1,5 +1,6 @@
 # Mac OS X
 .DS_Store
+Thumbs.db
 
 # Node
 node_modules
@@ -10,3 +11,7 @@ npm-debug.log
 
 # Example
 example/node_modules
+
+# Environment variables
+.env
+.env.local

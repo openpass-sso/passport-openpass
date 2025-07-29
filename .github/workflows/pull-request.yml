@@ -2,7 +2,10 @@ name: Pull request build and test
 
 on:
   pull_request:
-    branches: [ master ]
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -22,10 +25,12 @@ jobs:
           - '12'
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
+      with:
+        persist-credentials: false
 
     - name: Using Node version ${{ matrix.node-version }}
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ matrix.node-version }}
 
