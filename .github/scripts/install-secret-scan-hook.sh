@@ -1,8 +1,8 @@
 #!/bin/sh
 set -eu
 cd "$(git rev-parse --show-toplevel)"
-if ! command -v gitleaks >/dev/null 2>&1; then
-  echo "Install Gitleaks first (macOS: brew install gitleaks)." >&2
+if ! command -v betterleaks-v1 >/dev/null 2>&1 && ! command -v betterleaks >/dev/null 2>&1; then
+  echo "Install Betterleaks first (macOS: brew install --cask betterleaks/tap/betterleaks@1)." >&2
   exit 1
 fi
 configured=$(git config --get core.hooksPath || true)

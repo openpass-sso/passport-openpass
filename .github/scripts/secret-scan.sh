@@ -1,18 +1,26 @@
 #!/bin/sh
 set -eu
 
-if ! command -v gitleaks >/dev/null 2>&1; then
-  echo "Gitleaks is required. Install it (macOS: brew install gitleaks) and retry." >&2
+if command -v betterleaks-v1 >/dev/null 2>&1; then
+  scanner=betterleaks-v1
+elif command -v betterleaks >/dev/null 2>&1; then
+  scanner=betterleaks
+else
+  echo "Betterleaks is required. Install 1.9.0 (macOS: brew install --cask betterleaks/tap/betterleaks@1) and retry." >&2
+  exit 1
+fi
+if [ "$("$scanner" version)" != "1.9.0" ]; then
+  echo "Betterleaks 1.9.0 is required; install the pinned release linked in .github/secret-scanning.md." >&2
   exit 1
 fi
 
 cd "$(git rev-parse --show-toplevel)"
 case "${1:-history}" in
   staged)
-    exec gitleaks git --pre-commit --staged --no-banner --redact --verbose
+    exec "$scanner" git --pre-commit --staged --no-banner --redact --verbose
     ;;
   history)
-    exec gitleaks git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent HEAD"
+    exec "$scanner" git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent HEAD"
     ;;
   range)
     if [ "$#" -ne 3 ]; then
@@ -29,7 +37,7 @@ case "${1:-history}" in
       fi
       git cat-file -e "${sha}^{commit}"
     done
-    exec gitleaks git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent $2..$3"
+    exec "$scanner" git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent $2..$3"
     ;;
   *)
     echo "Usage: secret-scan.sh [staged|history|range BASE_SHA HEAD_SHA]" >&2
