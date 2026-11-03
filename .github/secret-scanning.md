@@ -19,6 +19,7 @@ The `secret-scan` CI job scans every introduced commit on each PR, including
 documentation-only changes, and every commit in a default-branch push. This
 catches a secret added and removed within the same PR. Full-history scans run
 weekly and on manual dispatch. Full Git history is fetched for reliable ranges.
+Merge-resolution changes are scanned too.
 The scanner version and release checksum are pinned; output is redacted. CI
 runs after a push, so a green merge gate does not prevent initial remote exposure.
 

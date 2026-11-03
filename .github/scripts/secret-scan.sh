@@ -12,7 +12,7 @@ case "${1:-history}" in
     exec gitleaks git --pre-commit --staged --no-banner --redact --verbose
     ;;
   history)
-    exec gitleaks git . --no-banner --redact --verbose --log-opts=HEAD
+    exec gitleaks git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent HEAD"
     ;;
   range)
     if [ "$#" -ne 3 ]; then
@@ -29,7 +29,7 @@ case "${1:-history}" in
       fi
       git cat-file -e "${sha}^{commit}"
     done
-    exec gitleaks git . --no-banner --redact --verbose --log-opts="$2..$3"
+    exec gitleaks git . --no-banner --redact --verbose --log-opts="--diff-merges=first-parent $2..$3"
     ;;
   *)
     echo "Usage: secret-scan.sh [staged|history|range BASE_SHA HEAD_SHA]" >&2
