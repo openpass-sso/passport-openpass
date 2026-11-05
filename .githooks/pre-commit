@@ -1,3 +1,0 @@
-#!/bin/sh
-set -eu
-exec sh "$(git rev-parse --show-toplevel)/.github/scripts/secret-scan.sh" staged
