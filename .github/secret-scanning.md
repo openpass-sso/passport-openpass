@@ -1,36 +1,44 @@
 # Secret scanning
 
 CI calls `openpass-sso/shared-public-actions/.github/workflows/secret-scan.yml@main`.
-The shared workflow installs checksum-verified Betterleaks 1.9.0 and scans every
-introduced PR/default-branch push commit. Weekly and manual runs scan the history
-reachable from HEAD. A green incremental scan does not establish that old history
-is free of secrets. CI uses a read-only token; output is redacted, reports are not
-uploaded, and live provider credential validation is disabled.
+It installs checksum-verified Betterleaks 1.9.0 and scans every introduced PR,
+merge-queue, and default-branch push commit, including add-then-delete secrets
+and merge-resolution changes. Weekly/manual runs audit all fetched branches and
+tags. A clean incremental scan does not establish that old history is clean.
+
+The scanner policy comes from the PR/merge-group base, or otherwise the default
+branch. Adding an ignore entry or scanner config in the PR being scanned cannot
+suppress its own finding. CI also rejects inline `betterleaks:allow` and
+`gitleaks:allow` exceptions. Revoke real credentials; request narrowly scoped
+false-positive or remediated-history exceptions in a separate reviewed PR.
+
+The shared workflow accepts an optional self-contained `config` TOML path and
+`ignore-file` path (default `.betterleaksignore`). Custom configs may extend the
+built-in rules with `extend.useDefault`, but `extend.path` is rejected so policy
+cannot load another file from the untrusted checkout. See the shared workflow's
+README for range overrides. CI uses a read-only token, redacts output, uploads
+no reports, and never performs live provider credential validation.
 
 ## Local staged checks
 
-The root `.pre-commit-config.yaml` references Betterleaks' upstream hook at the
-immutable commit for v1.9.0. `pre-commit` installs and caches the scanner; there
-is no OpenPass scanner wrapper or custom hook installer. Initial environment
-setup requires network access. See [pre-commit installation](https://pre-commit.com/#install).
+The root `.pre-commit-config.yaml` references Betterleaks' upstream hook at an
+immutable commit for v1.9.0. Install [pre-commit](https://pre-commit.com/#install);
+it builds and caches the scanner on first use, which requires network access.
+Run `pre-commit install` once per clone, retaining existing checks. If a clone
+already uses a different `core.hooksPath`, integrate the scanner command into
+that manager instead of replacing it.
 
-Install `pre-commit`, then run `pre-commit install` once in each clone.
-Keep any existing hooks enabled. If the clone has a custom `core.hooksPath`
-(for example, Husky), integrate `pre-commit run betterleaks --hook-stage pre-commit`
-into that hook manager instead of replacing its configuration.
-
-To initialize the scanner environment and check the current index:
+Check the current index with:
 
 ```sh
 pre-commit run betterleaks --hook-stage pre-commit
 ```
 
-This hook scans staged changes, including the staged version of partially staged
-files. It does not scan full repository history, even with `--all-files`. Local
-hooks can be bypassed and do not run for GitHub UI/API commits; keep CI scanning
-enabled. The v1.9.0 hook redacts output and does not enable live credential
-validation. Review CLI behavior when upgrading.
+The upstream hook scans staged changes, including partially staged files. Even
+`--all-files` does not turn this staged hook into a history audit. Local policy
+can differ from CI, which always reads policy from its trusted commit.
 
-Update the pinned hook revision and shared CI scanner together. Only suppress
-verified fixtures or false positives with narrow, reviewed exceptions; do not
-baseline real credentials or ignore entire repositories.
+Local hooks can be bypassed and do not run for GitHub UI/API commits. CI is the
+gate once the shared workflow is merged and the consumer workflow is active.
+Keep reviewed scanner versions aligned; only allow narrowly scoped, verified
+fixtures or false positives, never active credentials or whole repositories.
