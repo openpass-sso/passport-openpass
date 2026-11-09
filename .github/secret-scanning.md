@@ -1,7 +1,7 @@
 # Secret scanning
 
 CI calls `openpass-sso/shared-public-actions/.github/workflows/secret-scan.yml@main`.
-It installs checksum-verified Betterleaks 1.9.0 and scans every introduced PR,
+It installs checksum-verified Betterleaks 1.10.0 and scans every introduced PR,
 merge-queue, and default-branch push commit, including add-then-delete secrets
 and merge-resolution changes. Weekly/manual runs audit all fetched branches and
 tags. A clean incremental scan does not establish that old history is clean.
@@ -15,14 +15,12 @@ false-positive or remediated-history exceptions in a separate reviewed PR.
 The shared workflow accepts an optional self-contained `config` TOML path and
 `ignore-file` path (default `.betterleaksignore`). Custom configs may extend the
 built-in rules with `extend.useDefault`, but `extend.path` is rejected so policy
-cannot load another file from the untrusted checkout. See the shared workflow's
-README for range overrides. CI uses a read-only token, redacts output, uploads
-no reports, and never performs live provider credential validation.
+cannot load another file from the untrusted checkout. See the [shared scanner documentation](https://github.com/openpass-sso/shared-public-actions/blob/main/.github/docs/secret-scanning.md) for range overrides and optional validation/comment inputs. CI uses a read-only token, redacts output and uploads no reports. Provider validation and inline-comment exceptions remain disabled in these callers; enabling either is an explicit caller policy change.
 
 ## Local staged checks
 
 The root `.pre-commit-config.yaml` references Betterleaks' upstream hook at an
-immutable commit for v1.9.0. Install [pre-commit](https://pre-commit.com/#install);
+immutable commit for v1.10.0. Install [pre-commit](https://pre-commit.com/#install);
 it builds and caches the scanner on first use, which requires network access.
 Run `pre-commit install` once per clone, retaining existing checks. If a clone
 already uses a different `core.hooksPath`, integrate the scanner command into
