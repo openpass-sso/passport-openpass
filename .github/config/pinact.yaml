@@ -1,0 +1,5 @@
+version: 3
+
+ignore_actions:
+  - name: openpass-sso/shared-public-actions/.github/workflows/secret-scan.yml
+    ref: main
