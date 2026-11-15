@@ -33,7 +33,7 @@
     "passport-openidconnect": "0.1.x"
   },
   "devDependencies": {
-    "chai": "^2.3.0",
+    "chai": "^6.0.0",
     "mocha": "^10.4.0"
   },
   "engines": {
