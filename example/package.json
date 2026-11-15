@@ -20,7 +20,7 @@
     "express": ">= 0.0.0",
     "express-partials": "^0.3.0",
     "express-session": "^1.11.3",
-    "method-override": "^2.3.5",
+    "method-override": "^3.0.0",
     "passport": ">= 0.0.0",
     "router": "^1.1.3"
   }
